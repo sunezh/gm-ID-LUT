@@ -1,0 +1,56 @@
+** sch_path: /home/sunezh/Analog/Personal-Projects/gm-ID-LUT/analog/gm-ID-LUT/schematics/sweep_nfet_01v8.sch
+**.subckt sweep_nfet_01v8
+XM1 d g GND b sky130_fd_pr__nfet_01v8 L={length} W=5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+VDS d GND {VDS}
+VGS g GND dc {VGS} ac 1
+VSB GND b {VSB}
+H1 noise GND VDS 1
+**** begin user architecture code
+
+.param mc_mm_switch=0
+.param mc_pr_switch=0
+.include /home/sunezh/.volare/sky130A/libs.tech/ngspice/corners/tt.spice
+.include /home/sunezh/.volare/sky130A/libs.tech/ngspice/r+c/res_typical__cap_typical.spice
+.include /home/sunezh/.volare/sky130A/libs.tech/ngspice/r+c/res_typical__cap_typical__lin.spice
+.include /home/sunezh/.volare/sky130A/libs.tech/ngspice/corners/tt/specialized_cells.spice
+
+
+* Parameters
+.param VDS = 1
+.param VGS = 0.8
+.param VSB = 0
+.param length = 0.15
+.temp 27
+
+* Saves
+.save @m.xm1.msky130_fd_pr__nfet_01v8[id]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[gm]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[gds]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[gmbs]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[vth]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[vdsat]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[cgg]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[cgs]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[cgd]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[cgb]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[cdd]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[css]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[cgso]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[cgdo]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[cgbo]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[capbd]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[capbs]
+.save all
+
+.control
+op
+
+* noise v(noise) VGS lin 1 1 1
+.endc
+
+
+**** end user architecture code
+**.ends
+.GLOBAL GND
+.end
