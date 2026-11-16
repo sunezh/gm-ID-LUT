@@ -144,3 +144,8 @@ id = 96.6 µA
 gm = 1.137 mS
 vth = 0.708 V
 gm/ID = 11.8 S/A
+
+
+compose vgs_vec start=0 stop=1.8 step=0.025
+compose L_vec values 0.15 0.16 0.17 0.18 0.19 
++ 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1 2 3 4

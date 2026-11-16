@@ -1,6 +1,6 @@
 ** sch_path: /home/sunezh/Analog/Personal-Projects/gm-ID-LUT/analog/gm-ID-LUT/schematics/sweep_nfet_01v8.sch
 **.subckt sweep_nfet_01v8
-XM1 d g GND b sky130_fd_pr__nfet_01v8 L={length} W=5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
+XM1 d g GND b sky130_fd_pr__nfet_01v8 L={length} W={width} nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
 + ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
 VDS d GND {VDS}
 VGS g GND dc {VGS} ac 1
@@ -17,11 +17,46 @@ H1 noise GND VDS 1
 
 
 * Parameters
-.param VDS = 1
+.param VDS = 0.9
 .param VGS = 0.8
 .param VSB = 0
 .param length = 0.15
+.param width = 5
 .temp 27
+
+.control
+shell rm -f sweep_nfet_01v8.txt
+set appendwrite
+set wr_singlescale
+set wr_vecnames
+compose vgs_vec start=0 stop=1.8 step=0.45
+compose L_vec values 0.15 0.16
+
+foreach Lval $&L_vec
+    echo L= $Lval
+    alterparam length = $Lval
+    reset
+
+    foreach vg $&vgs_vec
+        alter VGS dc = $vg
+        op
+        wrdata sweep_nfet_01v8.txt all
+        unset wr_vecnames
+        destroy all
+    end
+end
+
+unset appendwrite
+alterparam length = 0.15
+reset
+op
+show
+write sweep_nfet_01v8.raw
+
+* noise v(noise) VGS lin 1 1 1
+.endc
+
+
 
 * Saves
 .save @m.xm1.msky130_fd_pr__nfet_01v8[id]
@@ -41,13 +76,11 @@ H1 noise GND VDS 1
 .save @m.xm1.msky130_fd_pr__nfet_01v8[cgbo]
 .save @m.xm1.msky130_fd_pr__nfet_01v8[capbd]
 .save @m.xm1.msky130_fd_pr__nfet_01v8[capbs]
-.save all
-
-.control
-op
-
-* noise v(noise) VGS lin 1 1 1
-.endc
+.save @m.xm1.msky130_fd_pr__nfet_01v8[l]
+.save @VGS[dc]
+.save @VDS[dc]
+.save @VSB[dc]
+.save g d b noise
 
 
 **** end user architecture code
