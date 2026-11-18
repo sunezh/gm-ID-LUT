@@ -6,7 +6,7 @@ W: 0.36, 0.39, 0.42, 0.52, 0.54, 0.55, 0.58, 0.60, 0.61, 0.64, 0.65, 0.74, 0.84,
 L: 0.15, 0.18, 0.25, 0.5, 1, 2, 4, 8, 20
 
 ## Setup
-Chose W = 5, source grounded, have L as a .param
+Chose W = 5 (characterized width that is wide enough to avoid narrow width effects), source grounded, have L as a .param
 
 Using CCVS -> .noise measures voltage so no conversion (would need resistor with own noise if CCCS used)
 - All ngspice controlled sources (ngspice prefixes them as E (VCVS), F (CCCS), G (VCCS), H(CCVS)) are ideal and noiseless 
@@ -149,3 +149,6 @@ gm/ID = 11.8 S/A
 compose vgs_vec start=0 stop=1.8 step=0.025
 compose L_vec values 0.15 0.16 0.17 0.18 0.19 
 + 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1 2 3 4
+
+[:, 0] gives an index, a 1D shape of (x,)
+[:, :1] gives a slice, a 2D shape of (x, 1)
